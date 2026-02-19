@@ -1,0 +1,46 @@
+﻿version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: threat_intel_db
+    environment:
+      POSTGRES_DB: threat_intel
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: changeme123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - threat_intel_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: threat_intel_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - threat_intel_network
+
+  backend:
+    build: ./backend
+    container_name: threat_intel_backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/app
+    networks:
+      - threat_intel_network
+
+volumes:
+  postgres_data:
+
+networks:
+  threat_intel_network:
+    driver: bridge

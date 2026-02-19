@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, AlertTriangle, CheckCircle, Globe, Database, TrendingUp, Search, Activity, Zap, Upload, FileText, AlertCircle } from 'lucide-react';
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
 export default function ThreatIntelDashboard() {
   const [ipAddress, setIpAddress] = useState('');

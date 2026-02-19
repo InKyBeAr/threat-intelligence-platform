@@ -16,6 +16,18 @@ app = FastAPI(
     description="Automated Threat Intelligence Aggregation and Response Platform",
     version="1.0.0"
 )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "https://inkybear.work.gd",
+        "http://inkybear.work.gd",
+        "https://threat-intel-frontend.onrender.com",  # Render frontend URL
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Add after existing endpoints
 

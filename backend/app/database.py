@@ -6,16 +6,18 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Database connection string
-POSTGRES_USER = os.getenv('POSTGRES_USER', 'admin')
-POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD', 'changeme123')
-POSTGRES_DB = os.getenv('POSTGRES_DB', 'threat_intel')
-POSTGRES_HOST = os.getenv('POSTGRES_HOST', 'postgres')
-POSTGRES_PORT = os.getenv('POSTGRES_PORT', '5432')
+# Use DATABASE_URL from Render
+DATABASE_URL = os.getenv('DATABASE_URL')
 
-DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+if not DATABASE_URL:
+    # Fallback for local development
+    POSTGRES_USER = os.getenv('POSTGRES_USER', 'admin')
+    POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD', 'changeme123')
+    POSTGRES_DB = os.getenv('POSTGRES_DB', 'threat_intel')
+    POSTGRES_HOST = os.getenv('POSTGRES_HOST', 'postgres')
+    POSTGRES_PORT = os.getenv('POSTGRES_PORT', '5432')
+    DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
 
-# Create engine
 engine = create_engine(DATABASE_URL, echo=True)
 
 # Create session factory
